@@ -3,12 +3,12 @@ import "../style/index.css";
 function render(variables = {}) {
   console.log("Variables actuales:", variables);
 
-  // Cover (portada)
+  // Cover
   let cover = variables.includeCover
     ? `<div class="cover"><img src="${variables.background}" /></div>`
     : `<div class="cover"></div>`;
 
-  // Redes sociales siempre visibles
+  // Redes sociales
   let socialMedia = `
     <ul class="${variables.socialMediaPosition}">
       <li>
@@ -60,7 +60,6 @@ function render(variables = {}) {
   `;
 }
 
-/* ===== NO TOCAR DE AQUÍ HACIA ABAJO ===== */
 window.onload = function() {
   window.variables = {
     includeCover: true,
@@ -80,7 +79,6 @@ window.onload = function() {
 
   render(window.variables);
 
-  // Listener para inputs
   document.querySelectorAll(".picker").forEach(function(elm) {
     elm.addEventListener("change", function() {
       const attr = this.getAttribute("for");
