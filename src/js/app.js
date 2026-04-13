@@ -1,36 +1,66 @@
 import "../style/index.css";
 
 function render(variables = {}) {
-  const coverHTML = variables.includeCover
-    ? `<div class="cover"><img src="${variables.background}" /></div>`
-    : "<div class='cover'></div>";
+  console.log("Variables actuales:", variables);
 
-  const socialMediaHTML = `
+  // Cover (portada)
+  let cover = variables.includeCover
+    ? `<div class="cover"><img src="${variables.background}" /></div>`
+    : `<div class="cover"></div>`;
+
+  // Redes sociales siempre visibles
+  let socialMedia = `
     <ul class="${variables.socialMediaPosition}">
-      <li><a href="${variables.twitter ||
-        "#"}"><i class="fa fa-twitter"></i></a></li>
-      <li><a href="${variables.github ||
-        "#"}"><i class="fa fa-github"></i></a></li>
-      <li><a href="${variables.linkedin ||
-        "#"}"><i class="fa fa-linkedin"></i></a></li>
-      <li><a href="${variables.instagram ||
-        "#"}"><i class="fa fa-instagram"></i></a></li>
+      <li>
+        <a href="${
+          variables.twitter ? `https://twitter.com/${variables.twitter}` : "#"
+        }" target="_blank">
+          <i class="fa fa-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a href="${
+          variables.github ? `https://github.com/${variables.github}` : "#"
+        }" target="_blank">
+          <i class="fa fa-github"></i>
+        </a>
+      </li>
+      <li>
+        <a href="${
+          variables.linkedin
+            ? `https://linkedin.com/in/${variables.linkedin}`
+            : "#"
+        }" target="_blank">
+          <i class="fa fa-linkedin"></i>
+        </a>
+      </li>
+      <li>
+        <a href="${
+          variables.instagram
+            ? `https://instagram.com/${variables.instagram}`
+            : "#"
+        }" target="_blank">
+          <i class="fa fa-instagram"></i>
+        </a>
+      </li>
     </ul>
   `;
 
+  // Render de la tarjeta
   document.querySelector("#widget_content").innerHTML = `
     <div class="widget">
-      ${coverHTML}
-      <img src="${variables.avatarURL}" class="photo">
+      ${cover}
+      <img src="${variables.avatarURL}" class="photo" />
       <h1>${variables.name || "Your name"} ${variables.lastName ||
     "Your lastname"}</h1>
       <h2>${variables.role || "Web Developer"}</h2>
       <h3>${variables.city || "Miami"}, ${variables.country || "USA"}</h3>
-      ${socialMediaHTML}
+      ${socialMedia}
     </div>
   `;
 }
 
+/* ===== NO TOCAR DE AQUÍ HACIA ABAJO ===== */
 window.onload = function() {
   window.variables = {
     includeCover: true,
@@ -44,15 +74,17 @@ window.onload = function() {
     name: null,
     lastName: null,
     role: null,
-    city: null,
-    country: null
+    country: null,
+    city: null
   };
 
   render(window.variables);
 
-  document.querySelectorAll(".picker").forEach(elm => {
+  // Listener para inputs
+  document.querySelectorAll(".picker").forEach(function(elm) {
     elm.addEventListener("change", function() {
       const attr = this.getAttribute("for");
+
       let val =
         this.value === "" || this.value === "null"
           ? null
@@ -61,6 +93,7 @@ window.onload = function() {
           : this.value === "false"
           ? false
           : this.value;
+
       render(Object.assign(window.variables, { [attr]: val }));
     });
   });
